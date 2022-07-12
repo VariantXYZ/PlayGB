@@ -445,7 +445,8 @@ void PGB_GameScene_update(void *object){
             int y_offset;
             int next_y_offset = 2;
             
-            for(int y = 0; y < (LCD_HEIGHT - 1); y++){
+            int y;
+            for(y = 0; y < (LCD_HEIGHT - 1); y++){
                 y_offset = next_y_offset;
                 
                 if(skip_counter == 5){
@@ -470,7 +471,8 @@ void PGB_GameScene_update(void *object){
                     int fb_index1 = lcd_rows;
                     int fb_index2 = lcd_rows + row_offset;
                     
-                    for(int x = 0; x < LCD_WIDTH; x++){
+                    int x;
+                    for(x = 0; x < LCD_WIDTH; x++){
                         int x3 = x2 + 1;
                         int palette = pixels[x] & 3;
                         
@@ -499,7 +501,8 @@ void PGB_GameScene_update(void *object){
                     playdate->graphics->markUpdatedRows(y2, y2 + y_offset - 1);
                         
                     #if PGB_DEBUG && PGB_DEBUG_UPDATED_ROWS
-                    for(int i = 0; i < y_offset; i++){
+                    int i;
+                    for(i = 0; i < y_offset; i++){
                         context->scene->debug_updatedRows[y2 + i] = true;
                     }
                     #endif
@@ -547,8 +550,8 @@ void PGB_GameScene_update(void *object){
         #if PGB_DEBUG && PGB_DEBUG_UPDATED_ROWS
         PDRect highlightFrame = gameScene->debug_highlightFrame;
         playdate->graphics->fillRect(highlightFrame.x, highlightFrame.y, highlightFrame.width, highlightFrame.height, kColorBlack);
-        
-        for(int y = 0; y < PGB_LCD_HEIGHT; y++){
+        int y;
+        for(y = 0; y < PGB_LCD_HEIGHT; y++){
             int absoluteY = PGB_LCD_Y + y;
             
             if(gameScene->debug_updatedRows[absoluteY]){

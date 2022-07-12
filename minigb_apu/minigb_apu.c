@@ -197,7 +197,8 @@ static inline void update_square(int16_t *left, int16_t *right, const bool ch2, 
 	set_note_freq(c, freq);
 	c->freq_inc *= 8;
 
-	for (uint_fast16_t i = 0; i < len; i++) {
+    uint_fast16_t i;
+	for (i = 0; i < len; i++) {
 		update_len(c);
 
 		if (!c->enabled)
@@ -257,8 +258,9 @@ static inline void update_wave(int16_t *left, int16_t *right, int len)
 	set_note_freq(c, freq);
 
 	c->freq_inc *= 32;
-
-	for (uint_fast16_t i = 0; i < len; i++) {
+    
+    uint_fast16_t i;
+	for (i = 0; i < len; i++) {
 		update_len(c);
 
 		if (!c->enabled)
@@ -319,7 +321,8 @@ static inline void update_noise(int16_t *left, int16_t *right, int len)
 	if (c->freq >= 14)
 		c->enabled = 0;
 
-	for (uint_fast16_t i = 0; i < len; i++) {
+    uint_fast16_t i;
+	for (i = 0; i < len; i++) {
 		update_len(c);
 
 		if (!c->enabled)
@@ -549,11 +552,14 @@ void audio_write(const uint16_t addr, const uint8_t val)
 	}
 
 	case 0xFF25:
-		for (uint_fast8_t j = 0; j < 4; j++) {
-			chans[j].on_left  = (val >> (4 + j)) & 1;
-			chans[j].on_right = (val >> j) & 1;
-		}
-		break;
+        {
+            uint_fast8_t j;
+            for (j = 0; j < 4; j++) {
+                chans[j].on_left  = (val >> (4 + j)) & 1;
+                chans[j].on_right = (val >> j) & 1;
+            }
+            break;
+        }
 	}
 }
 
@@ -571,7 +577,8 @@ void audio_init(void)
 					      0xFF, 0xFF, 0x00, 0x00, 0x3F,
 					      0x77, 0xF3, 0xF1 };
 
-		for(uint_fast8_t i = 0; i < sizeof(regs_init); ++i)
+		uint_fast8_t i;
+        for(i = 0; i < sizeof(regs_init); ++i)
 			audio_write(0xFF10 + i, regs_init[i]);
 	}
 
@@ -581,8 +588,8 @@ void audio_init(void)
 					      0x36, 0x02, 0xcf, 0x16,
 					      0x2c, 0x04, 0xe5, 0x2c,
 					      0xac, 0xdd, 0xda, 0x48 };
-
-		for(uint_fast8_t i = 0; i < sizeof(wave_init); ++i)
+        uint_fast8_t i;
+		for(i = 0; i < sizeof(wave_init); ++i)
 			audio_write(0xFF30 + i, wave_init[i]);
 	}
 }

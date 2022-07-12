@@ -66,7 +66,8 @@ void PGB_LibraryScene_listFiles(const char *filename, void *userdata) {
 
 void PGB_LibraryScene_reloadList(PGB_LibraryScene *libraryScene) {
     
-    for(int i = 0; i < libraryScene->games->length; i++){
+    int i;
+    for(i = 0; i < libraryScene->games->length; i++){
         PGB_Game *game = libraryScene->games->items[i];
         PGB_Game_free(game);
     }
@@ -77,14 +78,14 @@ void PGB_LibraryScene_reloadList(PGB_LibraryScene *libraryScene) {
     
     PGB_Array *items = libraryScene->listView->items;
     
-    for(int i = 0; i < items->length; i++){
+    for(i = 0; i < items->length; i++){
         PGB_ListItem *item = items->items[i];
         PGB_ListItem_free(item);
     }
     
     array_clear(items);
     
-    for(int i = 0; i < libraryScene->games->length; i++){
+    for(i = 0; i < libraryScene->games->length; i++){
         PGB_Game *game = libraryScene->games->items[i];
         
         PGB_ListItemButton *itemButton = PGB_ListItemButton_new(game->filename);
@@ -207,14 +208,15 @@ void PGB_LibraryScene_free(void *object) {
     
     PGB_Scene_free(libraryScene->scene);
     
-    for(int i = 0; i < libraryScene->games->length; i++){
+    int i;
+    for(i = 0; i < libraryScene->games->length; i++){
         PGB_Game *game = libraryScene->games->items[i];
         PGB_Game_free(game);
     }
     
     PGB_Array *items = libraryScene->listView->items;
     
-    for(int i = 0; i < items->length; i++){
+    for(i = 0; i < items->length; i++){
         PGB_ListItem *item = items->items[i];
         PGB_ListItem_free(item);
     }

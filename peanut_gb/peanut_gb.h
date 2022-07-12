@@ -980,10 +980,11 @@ void __gb_write(struct gb_s *gb, const uint_fast16_t addr, const uint8_t val)
 		/* DMA Register */
 		case 0x46:
 			gb->gb_reg.DMA = (val % 0xF1);
-
-			for(uint8_t i = 0; i < OAM_SIZE; i++)
-				gb->oam[i] = __gb_read(gb, (gb->gb_reg.DMA << 8) + i);
-
+            {
+                uint8_t i;
+                for(i = 0; i < OAM_SIZE; i++)
+                    gb->oam[i] = __gb_read(gb, (gb->gb_reg.DMA << 8) + i);
+            }
 			return;
 
 		/* DMG Palette Registers */
@@ -1408,7 +1409,8 @@ void __gb_draw_line(struct gb_s *gb)
 		/* Record number of sprites on the line being rendered, limited
 		 * to the maximum number sprites that the Game Boy is able to
 		 * render on each line (10 sprites). */
-		for(uint8_t sprite_number = 0;
+        uint8_t sprite_number;
+		for(sprite_number = 0;
 				sprite_number < PEANUT_GB_ARRAYSIZE(sprites_to_render);
 				sprite_number++)
 		{
@@ -1438,15 +1440,16 @@ void __gb_draw_line(struct gb_s *gb)
 #endif
 
 		/* Render each sprite, from low priority to high priority. */
+        uint8_t sprite_number;
 #if PEANUT_GB_HIGH_LCD_ACCURACY
 		/* Render the top ten prioritised sprites on this scanline. */
-		for(uint8_t sprite_number = number_of_sprites - 1;
+        for(sprite_number = number_of_sprites - 1;
 				sprite_number != 0xFF;
 				sprite_number--)
 		{
 			uint8_t s = sprites_to_render[sprite_number].sprite_number;
 #else
-		for (uint8_t sprite_number = NUM_SPRITES - 1;
+		for (sprite_number = NUM_SPRITES - 1;
 			sprite_number != 0xFF;
 			sprite_number--)
 		{
@@ -1511,7 +1514,8 @@ void __gb_draw_line(struct gb_s *gb)
 			t1 >>= shift;
 			t2 >>= shift;
 
-			for(uint8_t disp_x = start; disp_x != end; disp_x += dir)
+            uint8_t disp_x;
+			for(disp_x = start; disp_x != end; disp_x += dir)
 			{
 				uint8_t c = (t1 & 0x1) | ((t2 & 0x1) << 1);
 				// check transparency / sprite overlap / background overlap
@@ -3648,7 +3652,8 @@ uint8_t gb_colour_hash(struct gb_s *gb)
 
 	uint8_t x = 0;
 
-	for(uint16_t i = ROM_TITLE_START_ADDR; i <= ROM_TITLE_END_ADDR; i++)
+    uint16_t i;
+	for(i = ROM_TITLE_START_ADDR; i <= ROM_TITLE_END_ADDR; i++)
 		x += gb->gb_rom_read(gb, i);
 
 	return x;
@@ -3769,8 +3774,9 @@ enum gb_init_error_e gb_init(struct gb_s *gb,
 	/* Check valid ROM using checksum value. */
 	{
 		uint8_t x = 0;
-
-		for(uint16_t i = 0x0134; i <= 0x014C; i++)
+        
+        uint16_t i;
+		for(i = 0x0134; i <= 0x014C; i++)
 			x = x - gb->gb_rom_read(gb, i) - 1;
 
 		if(x != gb->gb_rom_read(gb, ROM_HEADER_CHECKSUM_LOC))

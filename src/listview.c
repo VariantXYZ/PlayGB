@@ -37,8 +37,8 @@ PGB_ListView* PGB_ListView_new(void) {
 void PGB_ListView_invalidateLayout(PGB_ListView *listView){
     
     int y = 0;
-    
-    for(int i = 0; i < listView->items->length; i++){
+    int i;
+    for(i = 0; i < listView->items->length; i++){
         PGB_ListItem *item = listView->items->items[i];
         item->offsetY = y;
         y += item->height;
@@ -109,8 +109,9 @@ void PGB_ListView_draw(PGB_ListView *listView){
         int listY = listView->frame.y;
 
         playdate->graphics->fillRect(listX, listY, listView->frame.width, listView->frame.height, kColorWhite);
-                
-        for(int i = 0; i < listView->items->length; i++){
+        
+        int i;
+        for(i = 0; i < listView->items->length; i++){
             PGB_ListItem *item = listView->items->items[i];
             
             int rowY = listY + item->offsetY - listView->contentOffset;

@@ -87,8 +87,10 @@ void cpu_endian_to_big_endian(unsigned char *src, unsigned char *buffer, size_t 
     
     if(*((char*)&x) == 1){
         // little endian machine, swap
-        for(size_t i = 0; i < len; i++){
-            for (size_t ix = 0; ix < size; ix++){
+        size_t i;
+        for(i = 0; i < len; i++){
+            size_t ix;
+            for (ix = 0; ix < size; ix++){
                 buffer[size * i + ix] = src[size * i + (size - 1 - ix)];
             }
         }
